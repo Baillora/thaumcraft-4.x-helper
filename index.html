@@ -1,0 +1,413 @@
+<!doctype html>
+<html class=" full-height">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Thaumcraft 4 Research Helper</title>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@400;600&display=swap"
+		rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	<script type="text/javascript" src="js/buckets-minified.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/select2.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="css/select2.css">
+	<script type="text/javascript" src="js/translation_dictionary.js"></script>
+	<script type="text/javascript" src="js/version_dictionary.js"></script>
+	<script type="text/javascript" src="js/addon_dictionary.js"></script>
+	<link rel="stylesheet" href="css/tcresearch.css">
+	<link rel="stylesheet" href="css/LESS/style.css">
+</head>
+
+<body class="full-height">
+
+	<div class="container full-height" id="main">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tabs-container">
+					<button class="tab-btn active" data-target="research-tab" data-translate="tab_research">Research
+						Helper</button>
+					<button class="tab-btn" data-target="node-tab" data-translate="tab_node">Aura Node</button>
+					<button class="tab-btn" data-target="reverse-tab" data-translate="tab_reverse">Target CV</button>
+					<button class="tab-btn" data-target="lexicon-tab" data-translate="tab_lexicon">Lexicon</button>
+					<button class="tab-btn" data-target="hungry-tab" data-translate="tab_hungry">Hungry Node</button>
+					<div class="lang-switcher">
+						<button class="lang-btn" data-lang="en">EN</button>
+						<button class="lang-btn" data-lang="ru">RU</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row full-height" style="height: calc(100% - 80px);">
+
+			<div id="research-tab" class="tab-content active full-height">
+
+				<div id="search-container">
+					<div class="glass-panel" style="position: relative;">
+						<div class="top-tabs"
+							style="position: absolute; right: 20px; top: -40px; display: flex; gap: 5px; z-index: 10;">
+							<button id="show-config" class="top-tab-btn config-btn" title="Config"><i
+									class="fa fa-cog"></i></button>
+							<a href="#" id="close_results" class="top-tab-btn trash-btn" title="Clear All"><i
+									class="fa fa-trash-o"></i></a>
+						</div>
+						<form>
+							<h2
+								style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:20px;">
+								<span data-translate="app_title">Thaumcraft 4 Research Helper</span>
+								<button class="info-btn" data-info="research" style="flex-shrink:0;">?</button>
+							</h2>
+
+							<div class="form-group">
+								<label for="fromSel" data-translate="label_from">From</label>
+								<input type="hidden" name="fromSel" id="fromSel" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label for="toSel" data-translate="label_to">To</label>
+								<input type="hidden" name="toSel" id="toSel" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label for="steps" data-translate="label_steps">In, at least</label>
+								<div class="input-group">
+									<span class="input-group-btn">
+										<a class="btn btn-default" id="decrement"><i class="fa fa-minus"></i></a>
+									</span>
+									<input type="text" name="steps" id="steps" class="form-control" value="1">
+									<span class="input-group-btn">
+										<a class="btn btn-default" id="increment"><i class="fa fa-plus"></i></a>
+									</span>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="node-modifier-group" id="searchModeGroup">
+									<div class="node-modifier-btn active" id="search-shortest"
+										data-translate="search_shortest">Shortest Path</div>
+									<div class="node-modifier-btn" id="search-cheapest"
+										data-translate="search_cheapest">Cheapest Path</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<a class="btn btn-block btn-primary" id="find_connection"
+									data-translate="btn_go">Go!</a>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<div id="search-results-wrapper">
+					<div id="search-results"></div>
+				</div>
+
+			</div>
+
+			<div id="node-tab"
+				class="tab-content col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12"
+				style="margin-top: 20px;">
+				<div class="glass-panel" id="node-calc-container">
+					<h2
+						style="color: #4fc3f7; margin-top: 0; font-weight: 300; letter-spacing: 1px; display:flex; align-items:center; justify-content:center; gap:10px;">
+						<span data-translate="node_title">Aura Node Calculator</span>
+						<button class="info-btn" data-info="node">?</button>
+					</h2>
+					<p style="text-align: center; color: #aaa; margin-bottom: 20px;" data-translate="node_desc">Add
+						aspects to the node to calculate Energized CV Output</p>
+
+					<div id="node-visualizer-container">
+						<div id="node-visualizer" class="mod-normal"></div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-8">
+							<div class="form-group">
+								<label for="nodeAspectSel" data-translate="label_select_aspect">Select Aspect</label>
+								<input type="hidden" name="nodeAspectSel" id="nodeAspectSel" class="form-control">
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="form-group">
+								<label for="nodeAspectAmount" data-translate="label_amount">Amount</label>
+								<input type="number" id="nodeAspectAmount" class="form-control" value="1" min="1"
+									style="height: 44px; color: #fff; background: transparent; border: 1px solid rgba(255,255,255,0.2); text-align: center; font-size: 1.2rem; border-radius: 4px;">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<a class="btn btn-block btn-primary" id="add_node_aspect" data-translate="btn_add_aspect">Add
+							Aspect</a>
+					</div>
+
+					<div id="node-aspects-list"></div>
+
+					<div class="node-modifier-group">
+						<div class="node-modifier-btn active" data-mod="normal" data-translate="mod_normal">Normal</div>
+						<div class="node-modifier-btn" data-mod="bright" data-translate="mod_bright">Bright (+20%)</div>
+						<div class="node-modifier-btn" data-mod="pale" data-translate="mod_pale">Pale (-20%)</div>
+						<div class="node-modifier-btn" data-mod="fading" data-translate="mod_fading">Fading (-50%)</div>
+					</div>
+
+					<hr style="border-color: rgba(255,255,255,0.1);">
+
+					<h3 style="text-align: center; margin-bottom: 15px; text-transform: uppercase; font-size: 1.4rem;"
+						data-translate="node_output">Energized Output (CV/t)</h3>
+
+					<div id="node-results">
+						<div class="primal-result"><img src="aspects/color/aer.png">
+							<div class="cv-value" id="cv-aer">0</div>
+							<div class="primal-name">Aer</div>
+						</div>
+						<div class="primal-result"><img src="aspects/color/terra.png">
+							<div class="cv-value" id="cv-terra">0</div>
+							<div class="primal-name">Terra</div>
+						</div>
+						<div class="primal-result"><img src="aspects/color/ignis.png">
+							<div class="cv-value" id="cv-ignis">0</div>
+							<div class="primal-name">Ignis</div>
+						</div>
+						<div class="primal-result"><img src="aspects/color/aqua.png">
+							<div class="cv-value" id="cv-aqua">0</div>
+							<div class="primal-name">Aqua</div>
+						</div>
+						<div class="primal-result"><img src="aspects/color/ordo.png">
+							<div class="cv-value" id="cv-ordo">0</div>
+							<div class="primal-name">Ordo</div>
+						</div>
+						<div class="primal-result"><img src="aspects/color/perditio.png">
+							<div class="cv-value" id="cv-perditio">0</div>
+							<div class="primal-name">Perditio</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="reverse-tab"
+				class="tab-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12"
+				style="margin-top: 20px;">
+				<div class="glass-panel" id="reverse-calc-container">
+					<h2
+						style="color: #4fc3f7; margin-top: 0; font-weight: 300; letter-spacing: 1px; display:flex; align-items:center; justify-content:center; gap:10px;">
+						<span data-translate="reverse_title">Target CV Calculator</span>
+						<button class="info-btn" data-info="reverse">?</button>
+					</h2>
+					<p style="text-align: center; color: #aaa; margin-bottom: 20px;" data-translate="reverse_desc">Enter
+						the desired Energized CV/t to find the most efficient compound aspects.</p>
+
+					<div class="row" style="margin-bottom: 20px;">
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom: 10px;">
+							<img src="aspects/color/aer.png" alt="aer" style="width: 32px; height: 32px;">
+							<input type="number" id="target-aer" class="form-control" value="0" min="0"
+								style="margin-top: 5px; text-align: center; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,0,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom: 10px;">
+							<img src="aspects/color/terra.png" alt="terra" style="width: 32px; height: 32px;">
+							<input type="number" id="target-terra" class="form-control" value="0" min="0"
+								style="margin-top: 5px; text-align: center; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(0,255,0,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom: 10px;">
+							<img src="aspects/color/ignis.png" alt="ignis" style="width: 32px; height: 32px;">
+							<input type="number" id="target-ignis" class="form-control" value="0" min="0"
+								style="margin-top: 5px; text-align: center; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,0,0,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom: 10px;">
+							<img src="aspects/color/aqua.png" alt="aqua" style="width: 32px; height: 32px;">
+							<input type="number" id="target-aqua" class="form-control" value="0" min="0"
+								style="margin-top: 5px; text-align: center; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(0,150,255,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom: 10px;">
+							<img src="aspects/color/ordo.png" alt="ordo" style="width: 32px; height: 32px;">
+							<input type="number" id="target-ordo" class="form-control" value="0" min="0"
+								style="margin-top: 5px; text-align: center; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom: 10px;">
+							<img src="aspects/color/perditio.png" alt="perditio" style="width: 32px; height: 32px;">
+							<input type="number" id="target-perditio" class="form-control" value="0" min="0"
+								style="margin-top: 5px; text-align: center; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(100,100,100,0.3);">
+						</div>
+					</div>
+
+					<div class="form-group" style="text-align: center;">
+						<div class="node-modifier-group" id="reverseNodeModifiers">
+							<div class="node-modifier-btn active" data-mod="normal" data-translate="mod_normal">Normal
+							</div>
+							<div class="node-modifier-btn" data-mod="bright" data-translate="mod_bright">Bright (+20%)
+							</div>
+							<div class="node-modifier-btn" data-mod="pale" data-translate="mod_pale">Pale (-20%)</div>
+							<div class="node-modifier-btn" data-mod="fading" data-translate="mod_fading">Fading (-50%)
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<a class="btn btn-block btn-primary" id="calculate_reverse"
+							data-translate="btn_calc_reverse">Calculate Optimal Aspects</a>
+					</div>
+
+					<div id="reverse-results" style="margin-top: 20px; font-size: 1.2rem; text-align: center;">
+					</div>
+				</div>
+			</div>
+
+			<div id="lexicon-tab" class="tab-content col-lg-10 col-lg-offset-1 col-xs-12" style="margin-top: 20px;">
+				<div class="glass-panel">
+					<h2
+						style="color:#4fc3f7; margin-top:0; font-weight:300; letter-spacing:1px; display:flex; align-items:center; justify-content:center; gap:10px;">
+						<span data-translate="tab_lexicon">Aspect Lexicon</span>
+						<button class="info-btn" data-info="lexicon">?</button>
+					</h2>
+					<p style="color:#aaa; text-align:center; margin-bottom:15px;" data-translate="lexicon_desc">Click
+						any aspect to see its recipe and uses.</p>
+					<input type="text" id="lexicon-search" class="form-control" placeholder="Search aspects..."
+						style="max-width:300px; margin: 0 auto 20px; display:block; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(255,255,255,0.2);">
+					<div id="lexicon-grid" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;"></div>
+					<div id="lexicon-detail"
+						style="display:none; margin-top:25px; padding:20px; background:rgba(0,0,0,0.4); border-radius:8px; border:1px solid rgba(79,195,247,0.3);">
+						<div id="lexicon-detail-content"></div>
+					</div>
+				</div>
+			</div>
+
+			<div id="hungry-tab" class="tab-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-12"
+				style="margin-top:20px;">
+				<div class="glass-panel">
+					<h2
+						style="color:#ef5350; margin-top:0; font-weight:300; letter-spacing:1px; display:flex; align-items:center; justify-content:center; gap:10px;">
+						<span data-translate="tab_hungry">Hungry Node Simulator</span>
+						<button class="info-btn" data-info="hungry"
+							style="background:rgba(239,83,80,0.15); border-color:rgba(239,83,80,0.4); color:#ef5350;">?</button>
+					</h2>
+					<p style="color:#aaa; text-align:center; margin-bottom:20px;" data-translate="hungry_desc">Simulate
+						feeding a Hungry Node. Enter raw amounts of primal essentia to calculate the CV gain.</p>
+					<div class="row" style="margin-bottom:15px;">
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom:10px;">
+							<img src="aspects/color/aer.png" style="width:32px; height:32px;">
+							<input type="number" id="hungry-aer" class="form-control" value="0" min="0"
+								style="margin-top:5px; text-align:center; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(255,255,0,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom:10px;">
+							<img src="aspects/color/terra.png" style="width:32px; height:32px;">
+							<input type="number" id="hungry-terra" class="form-control" value="0" min="0"
+								style="margin-top:5px; text-align:center; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(0,255,0,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom:10px;">
+							<img src="aspects/color/ignis.png" style="width:32px; height:32px;">
+							<input type="number" id="hungry-ignis" class="form-control" value="0" min="0"
+								style="margin-top:5px; text-align:center; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(255,0,0,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom:10px;">
+							<img src="aspects/color/aqua.png" style="width:32px; height:32px;">
+							<input type="number" id="hungry-aqua" class="form-control" value="0" min="0"
+								style="margin-top:5px; text-align:center; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(0,150,255,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom:10px;">
+							<img src="aspects/color/ordo.png" style="width:32px; height:32px;">
+							<input type="number" id="hungry-ordo" class="form-control" value="0" min="0"
+								style="margin-top:5px; text-align:center; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(255,255,255,0.3);">
+						</div>
+						<div class="col-xs-4 col-sm-2 text-center" style="margin-bottom:10px;">
+							<img src="aspects/color/perditio.png" style="width:32px; height:32px;">
+							<input type="number" id="hungry-perditio" class="form-control" value="0" min="0"
+								style="margin-top:5px; text-align:center; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(100,100,100,0.3);">
+						</div>
+					</div>
+					<div class="form-group" style="text-align:center;">
+						<label style="color:#aaa;" data-translate="hungry_node_mod_label">Current Node Modifier:</label>
+						<div class="node-modifier-group" id="hungryNodeModifiers"
+							style="margin:10px auto; width:fit-content;">
+							<div class="node-modifier-btn active" data-mod="normal" data-translate="mod_normal">Normal
+							</div>
+							<div class="node-modifier-btn" data-mod="bright" data-translate="mod_bright">Bright (+20%)
+							</div>
+							<div class="node-modifier-btn" data-mod="pale" data-translate="mod_pale">Pale (-20%)</div>
+							<div class="node-modifier-btn" data-mod="fading" data-translate="mod_fading">Fading (-50%)
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<a class="btn btn-block" id="calculate_hungry"
+							style="background:linear-gradient(135deg, #ef5350, #b71c1c); color:#fff; border:none;"
+							data-translate="btn_hungry_calc">Simulate Feeding</a>
+					</div>
+					<div id="hungry-results" style="margin-top:20px; text-align:center; font-size:1.2rem;"></div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="container" id="config">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+
+				<h2 data-translate="config_title">Configuration</h2>
+
+				<div class="clearfix text-center">
+
+					<div class="btn-group">
+						<a href="#" class="btn btn-default" id="sel_all" data-translate="btn_sel_all">Select All</a>
+						<a href="#" class="btn btn-default" id="desel_all" data-translate="btn_desel_all">Deselect
+							All</a>
+					</div>
+
+					<div class="btn-group" id="addons">
+					</div>
+
+					<div class="btn-group">
+						<select name="version" id="version" class="btn btn-primary"></select>
+					</div>
+
+				</div>
+
+				<p class="avail-label" data-translate="avail_label">Available Aspects</p>
+				<ul id="avail"></ul>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<div id="combination-box-wrapper">
+		<div id="combination-box">
+			<div id="left">
+				<img />
+				<div class="aspect-name"></div>
+				<div class="aspect-desc"></div>
+			</div>
+			<div id="right">
+				<img />
+				<div class="aspect-name"></div>
+				<div class="aspect-desc"></div>
+			</div>
+			<div id="equals">
+				<img />
+				<div class="aspect-name"></div>
+				<div class="aspect-desc"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="info-modal-overlay"
+		style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+		<div id="info-modal"
+			style="background:#1a1a1f; border:1px solid rgba(79,195,247,0.4); border-radius:12px; padding:30px; max-width:500px; width:90%; position:relative; box-shadow: 0 0 40px rgba(79,195,247,0.2);">
+			<button id="info-modal-close"
+				style="position:absolute; top:12px; right:16px; background:none; border:none; color:#aaa; font-size:2rem; cursor:pointer; line-height:1;">&times;</button>
+			<h3 id="info-modal-title" style="color:#4fc3f7; margin-top:0; font-size:1.8rem;"></h3>
+			<div id="info-modal-body" style="color:#ccc; font-size:1.3rem; line-height:1.7;"></div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="js/tcresearch_v2.js"></script>
+
+</body>
+
+</html>
